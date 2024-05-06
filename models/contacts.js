@@ -31,13 +31,13 @@ const removeContact = async (contactId) => {
   // await updateContact(contacts);
   // return removeContact;
   const newContacts = contacts.filter((_, index) => index !== idx);
-  await fs.writeFile(filePath, JSON.stringify(newContacts));
+  await fs.writeFile(filePath, JSON.stringify(newContacts, null, 2));
   return removeContact;
 };
 
 const addContact = async (body) => {
   const contacts = await listContacts();
-  const newContact = { ...body, id: v4() };
+  const newContact = { id: v4(), ...body };
   contacts.push(newContact);
   await fs.writeFile(filePath, JSON.stringify(contacts, null, 2));
   return newContact;
@@ -50,7 +50,7 @@ const updateContact = async (contactId, body) => {
     return null;
   }
 
-  contacts[idx] = { ...body, id: contactId };
+  contacts[idx] = { id: contactId, ...body };
   await fs.writeFile(filePath, JSON.stringify(contacts, null, 2));
 
   return contacts[idx];
